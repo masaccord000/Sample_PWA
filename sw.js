@@ -8,8 +8,8 @@ const urlsToCache = [
   "/manifest.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
-  "https://cdn.jsdelivr.net/npm/@stlite/mountable@0.75.0/build/stlite.js",
-  "https://cdn.jsdelivr.net/npm/@stlite/mountable@0.75.0/build/stlite.css"
+  "/assets/stlite.js",
+  "/assets/stlite.css"
 ];
 
 self.addEventListener("install", event => {
@@ -34,6 +34,7 @@ self.addEventListener("fetch", event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
+
 
 
 

@@ -1,9 +1,8 @@
-const CACHE_NAME = "stlite-cache-v2";
+const CACHE_NAME = "stlite-cache-v1";
 const urlsToCache = [
   "/index.html",
   "/main.py",
   "/Home.py",
-  "/ResizeImages.py",
   "/About.py",
   "/manifest.json",
   "/icons/icon-192.png",
@@ -34,13 +33,3 @@ self.addEventListener("fetch", event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
-
-
-
-
-
-
-
-
-
-

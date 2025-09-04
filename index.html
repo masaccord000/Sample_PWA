@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>変電アプリ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3367D6" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.58.3/build/stlite.css" />
+    <script>
+      window.addEventListener("load", () => {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("sw.js").then(reg => {
+            console.log("✅ Service Worker registered:", reg);
+          }).catch(err => {
+            console.error("❌ Service Worker registration failed:", err);
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.58.3/build/stlite.js"></script>
+    <script>
+      Promise.all([
+        fetch("main.py").then(res => res.text()),
+        fetch("Home.py").then(res => res.text()),
+        fetch("ResizeImages.py").then(res => res.text()),
+        fetch("About.py").then(res => res.text()),
+        fetch("icon.png").then(res => res.arrayBuffer())
+      ]).then(([mainCode, homeCode,ResizeImagesCode, aboutCode, iconBuffer]) => {
+        const iconBytes = new Uint8Array(iconBuffer);
+        stlite.mount(
+          {
+            entrypoint: "main.py",
+            files: {
+              "main.py": mainCode,
+              "Home.py": homeCode,
+              "ResizeImages.py": ResizeImagesCode,
+              "About.py": aboutCode,
+              "icon.png": iconBytes
+            }
+          },
+          document.getElementById("root")
+        );
+      });
+    </script>
+  </body>
+</html>

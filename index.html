@@ -30,16 +30,15 @@
         fetch("ResizeImages.py").then(res => res.text()),
         fetch("About.py").then(res => res.text()),
         fetch("icon.png").then(res => res.arrayBuffer())
-      ]).then(([mainCode, homeCode, resizeCode, aboutCode, iconBuffer]) => {
+      ]).then(([mainCode, homeCode,ResizeImagesCode, aboutCode, iconBuffer]) => {
         const iconBytes = new Uint8Array(iconBuffer);
         stlite.mount(
           {
             entrypoint: "main.py",
-            requirements: ["streamlit"],
             files: {
               "main.py": mainCode,
               "Home.py": homeCode,
-              "ResizeImages.py": resizeCode,
+              "ResizeImages.py": ResizeImagesCode,
               "About.py": aboutCode,
               "icon.png": iconBytes
             }
@@ -50,4 +49,3 @@
     </script>
   </body>
 </html>
-

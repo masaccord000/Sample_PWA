@@ -1,15 +1,14 @@
-const CACHE_NAME = "stlite-cache-v2";
+const CACHE_NAME = "stlite-cache-v1";
 const urlsToCache = [
   "/index.html",
   "/main.py",
   "/Home.py",
-  "ResizeImages.py",
   "/About.py",
   "/manifest.json",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
-  "stlite.js",
-  "stlite.css"
+  "https://cdn.jsdelivr.net/npm/@stlite/mountable@0.58.3/build/stlite.js",
+  "https://cdn.jsdelivr.net/npm/@stlite/mountable@0.58.3/build/stlite.css"
 ];
 
 self.addEventListener("install", event => {
@@ -34,5 +33,3 @@ self.addEventListener("fetch", event => {
     fetch(event.request).catch(() => caches.match(event.request))
   );
 });
-
-

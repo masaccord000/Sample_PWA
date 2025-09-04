@@ -7,7 +7,27 @@ def render():
     st.title("🖼️ 画像一括リサイズ")
     st.write("複数の画像を選択し、指定した方法で一括リサイズします。")
 
-    uploaded_files = st.file_uploader("画像を選択（複数可）", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+    # セッションステート初期化
+    if "uploaded_files" not in st.session_state:
+        st.session_state.uploaded_files = None
+    if "reset_triggered" not in st.session_state:
+        st.session_state.reset_triggered = False
+
+    # リセット処理
+    if st.session_state.reset_triggered:
+        st.session_state.reset_triggered = False
+        st.session_state.uploaded_files = None
+        st.experimental_rerun()
+
+    # ファイルアップロード
+    uploaded = st.file_uploader(
+        "画像を選択（複数可）",
+        type=["jpg", "jpeg", "png"],
+        accept_multiple_files=True,
+        key="uploader"
+    )
+    if uploaded:
+        st.session_state.uploaded_files = uploaded
 
     resize_mode = st.selectbox("リサイズ方法を選択", [
         "縮小率（%）",
@@ -29,10 +49,12 @@ def render():
     elif resize_mode == "短辺（px）":
         target_short = st.selectbox("短辺を選択", list(range(100, 1100, 100)), index=4)
 
-    if uploaded_files:
+    files_to_process = st.session_state.uploaded_files
+
+    if files_to_process:
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, "w") as zip_file:
-            for file in uploaded_files:
+            for file in files_to_process:
                 img = Image.open(file)
                 aspect_ratio = img.width / img.height
 
@@ -81,7 +103,7 @@ def render():
                 st.image(resized_img, caption=f"{file.name}（{resize_mode}でリサイズ）", use_column_width=False)
                 st.write(f"元サイズ: {img.width} × {img.height} → 新サイズ: {resized_img.width} × {resized_img.height}")
 
-                # 個別ダウンロード
+                # 個別保存
                 buf = io.BytesIO()
                 resized_img.save(buf, format="PNG")
                 st.download_button(
@@ -94,15 +116,11 @@ def render():
                 # ZIPに追加
                 zip_file.writestr(f"resized_{file.name}", buf.getvalue())
 
-        # ZIP一括ダウンロード
-        st.download_button(
-            label="📦 一括ダウンロード（ZIP）",
+        # 一括保存ボタン（ZIP）
+        if st.download_button(
+            label="📦 一括保存（ZIP）",
             data=zip_buffer.getvalue(),
             file_name="resized_images.zip",
             mime="application/zip"
-        )
-
-# 実行
-if __name__ == "__main__":
-    render()
-
+        ):
+            st.success

@@ -19,9 +19,10 @@ def render():
         </style>
         <div style="display: flex; align-items: center;">
             <img src="data:image/png;base64,{image_base64}" class="custom-logo">
-            <h2 style="margin: 0;">変電Webアプリ</h2>
+            <h2 style="margin: 0;">変電アプリ</h2>
         </div>
         """,
         unsafe_allow_html=True
     )
+
     st.write("これは stlite で構築されたホームページです。")

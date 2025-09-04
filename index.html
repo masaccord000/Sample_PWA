@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#3367D6" />
     <link rel="manifest" href="manifest.json" />
     <link rel="icon" href="icon.png" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.75.0./build/stlite.css" />
+    <link rel="stylesheet" href="/assets/stlite.css" />
     <script>
       window.addEventListener("load", () => {
         if ("serviceWorker" in navigator) {
@@ -22,7 +22,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="./assets/stlite.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.75.0/build/stlite.js"></script>
     <script>
       Promise.all([
         fetch("main.py").then(res => res.text()),
@@ -49,6 +49,7 @@
     </script>
   </body>
 </html>
+
 
 
 
